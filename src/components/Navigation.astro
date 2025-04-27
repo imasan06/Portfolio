@@ -1,0 +1,131 @@
+---
+const navLinks = [
+  { name: "Inicio", href: "#" },
+  { name: "Sobre mí", href: "#about" },
+  { name: "Experiencia", href: "#experience" },
+  { name: "Tecnologías", href: "#skills" },
+  { name: "Proyectos", href: "#projects" },
+  { name: "Contacto", href: "#contact" },
+];
+---
+
+<header
+  id="navbar"
+  class="fixed left-0 top-0 z-50 w-full transition-all duration-300"
+>
+  <div class="container mx-auto flex h-16 items-center justify-center px-4">
+    <nav class="hidden md:block">
+      <ul class="flex space-x-8">
+        {
+          navLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="text-slate-300 transition-colors hover:text-white"
+              >
+                {link.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <button
+      id="menu-toggle"
+      class="md:hidden rounded-md p-2 text-slate-300 hover:bg-slate-800 hover:text-white"
+      aria-label="Toggle menu"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="menu-icon"
+      >
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="close-icon hidden"
+      >
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <div
+    id="mobile-menu"
+    class="hidden fixed inset-0 z-40 h-screen w-full flex-col bg-slate-900 pt-16 md:hidden"
+  >
+    <nav class="container mx-auto px-4">
+      <ul class="flex flex-col space-y-4 py-8">
+        {
+          navLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="block text-lg text-slate-300 transition-colors hover:text-white mobile-link"
+              >
+                {link.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+
+  const navbar = document.getElementById("navbar");
+  const handleScroll = () => {
+    if (window.scrollY > 10) {
+      navbar?.classList.add("bg-slate-900/80", "backdrop-blur-md");
+    } else {
+      navbar?.classList.remove("bg-slate-900/80", "backdrop-blur-md");
+    }
+  };
+
+  window.addEventListener("scroll", handleScroll);
+
+  // Mobile menu toggle
+  const menuToggle = document.getElementById("menu-toggle");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const menuIcon = document.querySelector(".menu-icon");
+  const closeIcon = document.querySelector(".close-icon");
+  const mobileLinks = document.querySelectorAll(".mobile-link");
+
+  menuToggle?.addEventListener("click", () => {
+    mobileMenu?.classList.toggle("hidden");
+    menuIcon?.classList.toggle("hidden");
+    closeIcon?.classList.toggle("hidden");
+    document.body.classList.toggle("overflow-hidden");
+  });
+
+  mobileLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      mobileMenu?.classList.add("hidden");
+      menuIcon?.classList.remove("hidden");
+      closeIcon?.classList.add("hidden");
+      document.body.classList.remove("overflow-hidden");
+    });
+  });
+</script>

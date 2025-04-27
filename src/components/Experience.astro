@@ -1,0 +1,104 @@
+---
+const skillsRegistry = [
+  { name: "HTML", logo: "/images/skills/html.svg" },
+  { name: "CSS", logo: "/images/skills/css.svg" },
+  { name: "JavaScript", logo: "/images/skills/javascript.svg" },
+  { name: "TypeScript", logo: "/images/skills/typescript.svg" },
+  { name: "React", logo: "/images/skills/react.svg" },
+  { name: "Node.js", logo: "/images/skills/nodejs.svg" },
+  { name: "Astro", logo: "/images/skills/astro.svg" },
+  { name: "Tailwind", logo: "/images/skills/tailwind.svg" },
+  { name: "Git", logo: "/images/skills/git.svg" },
+  { name: "Sql", logo: "/images/skills/sql.svg" },
+  { name: "Spring", logo: "/images/skills/spring.svg" },
+  { name: "Express", logo: "/images/skills/Express_dark.svg" }
+];
+
+const experiences = [
+  {
+    title: "Freelance / Proyectos personales",
+    company: "Aplicaciones para gestionar actividades de la vida diaria",
+    description: [
+      "Desarrollo full-stack personalizado según requerimientos",
+      "Investigación de necesidades y problemas de usuarios finales"
+    ],
+    skills: ["HTML", "CSS", "JavaScript", "TypeScript", "React", "Tailwind", "Express"]
+  },
+  {
+    title: "Web Developer",
+    company: "Aurum",
+    period: "2018 - 2021",
+    description: [
+      "Desarrollé y diseñé la página web principal de la empresa",
+      "Implementé funcionalidades aprendidas en proyectos freelance",
+      "Colaboré con arquitectos para validar la estructura del sitio"
+    ],
+    skills: ["HTML", "CSS", "JavaScript", "Astro", "Tailwind"]
+  }
+];
+---
+
+<section id="experience" class="py-20">
+  <div class="container mx-auto px-4">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="mb-12 text-center text-3xl font-bold text-white sm:text-4xl">Experiencia Laboral</h2>
+
+      <div class="relative space-y-8 pl-6 before:absolute before:left-0 before:top-2 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-purple-400 before:via-cyan-400 before:to-transparent">
+        {experiences.map((experience, index) => (
+          <div class="relative opacity-0 experience-item" data-index={index}>
+            <div class="absolute -left-[30px] flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 ring-2 ring-purple-400">
+              <div class="h-2 w-2 rounded-full bg-cyan-400"></div>
+            </div>
+
+            <div class="rounded-lg border border-slate-800 bg-slate-900/50 p-6 backdrop-blur-sm">
+              <h3 class="text-xl font-bold text-white">{experience.title}</h3>
+              <h4 class="mb-2 text-lg font-semibold text-purple-400">{experience.company}</h4>
+
+              <ul class="ml-5 list-disc space-y-1 text-slate-300">
+                {experience.description.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+
+              {experience.skills.length > 0 && (
+                <div class="mt-4 flex flex-wrap gap-2">
+                  {experience.skills.map((skill) => {
+                    const skillObj = skillsRegistry.find(s => s.name === skill);
+                    return skillObj ? (
+                      <img src={skillObj.logo} alt={skillObj.name} title={skillObj.name} class="h-6 w-6" />
+                    ) : null;
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const experienceItems = document.querySelectorAll<HTMLElement>('.experience-item');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const item = entry.target as HTMLElement;
+          const index = parseInt(item.getAttribute('data-index') ?? '0', 10);
+          item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          item.style.transitionDelay = `${index * 0.1}s`;
+          item.style.transform = 'translateX(0)';
+          item.style.opacity = '1';
+          observer.unobserve(item);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    experienceItems.forEach(item => {
+      item.style.transform = 'translateX(-20px)';
+      item.style.opacity = '0';
+      observer.observe(item);
+    });
+  });
+</script>

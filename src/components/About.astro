@@ -1,0 +1,80 @@
+---
+
+---
+
+<section id="about" class="py-20">
+  <div class="container mx-auto px-4">
+    <div class="mx-auto max-w-3xl text-center opacity-0" id="about-content">
+      <h2 class="mb-8 text-3xl font-bold text-white sm:text-4xl">Sobre mí</h2>
+
+      <div class="space-y-6 text-left text-lg text-slate-300">
+        <p>
+          ¡Hola! Me llamo <span
+            class="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent"
+            >Imanol Sánchez</span
+          >. Soy <span
+            class="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent"
+            >desarrollador de software</span
+          > y, a la vez, <span
+            class="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent"
+            >estudiante de quinto ciclo de Ingeniería de Sistemas</span
+          >. Empecé en este mundo gracias a los videojuegos, a los 11 años,
+          programando mi primer videojuego en C++ estilo 8-bit
+          , lo cual también fue motivo de mi elección de carrera.
+        </p>
+
+        <p>
+          Mi camino y proceso como programador cambiaron y ahora me enfoco en el
+          desarrollo de <span
+            class="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent"
+            >aplicaciones y páginas web</span
+          >, habiendo aprendido <span
+            class="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent"
+            >frameworks y tecnologías</span
+          > que encontrarás aquí.
+        </p>
+
+        <p>
+          Mi objetivo, fuera del código, es <span
+            class="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent"
+            >aportar en la búsqueda y desarrollo de nuevos conceptos y
+            tecnologías</span
+          >.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Casteamos a HTMLElement y comprobamos null
+    const aboutContent = document.getElementById(
+      "about-content"
+    ) as HTMLElement | null;
+    if (!aboutContent) return;
+
+    // Prepara posición inicial para el fade-in
+    aboutContent.style.transform = "translateY(20px)";
+    aboutContent.style.opacity = "0";
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Aserción de tipo para poder usar .style y .transform
+            const targetEl = entry.target as HTMLElement;
+            targetEl.style.transition =
+              "opacity 0.6s ease, transform 0.6s ease";
+            targetEl.style.opacity = "1";
+            targetEl.style.transform = "translateY(0)";
+            observer.unobserve(targetEl);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(aboutContent);
+  });
+</script>

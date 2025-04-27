@@ -1,0 +1,208 @@
+---
+
+---
+
+<section id="contact" class="py-20">
+  <div class="container mx-auto px-4">
+    <div id="contact-content" class="mx-auto max-w-3xl opacity-0">
+      <h2 class="section-title">Contacto</h2>
+
+      <p class="mb-12 text-center text-lg text-gray-300">
+        ¿Tienes un proyecto en mente? ¡Me encantaría saberlo!
+      </p>
+
+      <div class="grid gap-8 md:grid-cols-2">
+        <div class="space-y-6">
+          <div
+            class="flex items-start gap-4 rounded-lg border border-gray-800 bg-space-blue/50 p-4 backdrop-blur-sm"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="mt-1 h-6 w-6 text-purple-glow"
+            >
+              <path
+                d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+              ></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            <div>
+              <h3 class="font-medium text-white">Email</h3>
+              <p class="text-gray-300">imanolsan65@gmail.com</p>
+            </div>
+          </div>
+
+          <div
+            class="flex items-start gap-4 rounded-lg border border-gray-800 bg-space-blue/50 p-4 backdrop-blur-sm"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="mt-1 h-6 w-6 text-cyan-glow"
+            >
+              <path
+                d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+              ></path>
+            </svg>
+            <div>
+              <h3 class="font-medium text-white">Redes Sociales</h3>
+              <p class="text-gray-300">
+                Conéctate conmigo en
+                <a
+                  href="https://www.linkedin.com/in/imanol-s%C3%A1nchez-9b702a306/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-cyan-glow underline hover:text-cyan-300"
+                >
+                  LinkedIn
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <form
+        id="contact-form"
+        action="https://formspree.io/f/xjkwkwyq"
+        method="POST"
+        class="space-y-4"
+      >
+       
+      
+        <div>
+          <input
+            type="email"
+            name="email"            
+            placeholder="Tu Email"
+            required
+            class="w-full rounded-md border border-gray-700 bg-gray-800/50 px-3 py-2 text-gray-200 placeholder:text-gray-400"
+          />
+        </div>
+      
+        <div>
+          <textarea
+            name="message"
+            placeholder="Tu Mensaje"
+            required
+            class="min-h-[120px] w-full rounded-md border border-gray-700 bg-gray-800/50 px-3 py-2 text-gray-200 placeholder:text-gray-400"
+          ></textarea>
+        </div>
+      
+        <button
+          type="submit"
+          class="w-full rounded-md bg-gradient-to-r from-purple-glow to-cyan-glow px-4 py-2 text-white hover:from-purple-600 hover:to-cyan-600"
+        >
+          Enviar Mensaje
+        </button>
+      
+        <div id="form-success" class="hidden text-center text-green-400">
+          ¡Mensaje enviado con éxito! Me pondré en contacto contigo pronto.
+        </div>
+      </form>
+      
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Aserciones de tipo y checks de null
+    const contactContent = document.getElementById(
+      "contact-content"
+    ) as HTMLElement;
+    if (!contactContent) return;
+
+    const form = document.getElementById("contact-form") as HTMLFormElement;
+    if (!form) return;
+
+    const successMessage = document.getElementById(
+      "form-success"
+    ) as HTMLElement;
+
+    // Intersection Observer
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const targetEl = entry.target as HTMLElement;
+            targetEl.style.transition =
+              "opacity 0.6s ease, transform 0.6s ease";
+            targetEl.style.opacity = "1";
+            targetEl.style.transform = "translateY(0)";
+            observer.unobserve(targetEl);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    // Inicializamos posición y arrancamos observer
+    contactContent.style.transform = "translateY(20px)";
+    observer.observe(contactContent);
+
+    // Manejo del form
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      // Cast a botón para tener .disabled e .innerHTML
+      const submitButton = form.querySelector<HTMLButtonElement>(
+        'button[type="submit"]'
+      )!;
+      const originalText = submitButton.innerHTML;
+
+      submitButton.disabled = true;
+      submitButton.innerHTML = `
+          <span class="flex items-center justify-center gap-2">
+            <div class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+            Enviando...
+          </span>
+        `;
+
+      // Enviar datos a Formspree usando fetch
+      fetch(form.action, {
+        method: form.method,
+        body: new FormData(form),
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          // Éxito
+          form.reset();
+          successMessage?.classList.remove("hidden");
+          
+          setTimeout(() => {
+            successMessage?.classList.add("hidden");
+          }, 5000);
+        } else {
+          // Error
+          throw new Error('Error al enviar el formulario');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Hubo un problema al enviar tu mensaje. Por favor, inténtalo de nuevo.');
+      })
+      .finally(() => {
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalText;
+      });
+    });
+  });
+</script>
